@@ -1,4 +1,5 @@
 print("conftest loaded")
+import os
 import pytest
 from playwright.sync_api import sync_playwright
 from pytest_html import extras 
@@ -7,8 +8,8 @@ from pytest_html import extras
 def custom_page(request):
     p = sync_playwright().start()
 
-    
-    browser = p.chromium.launch(headless=False)
+    headless = os.getenv("HEADLESS", "true") == "true"
+    browser = p.chromium.launch(headless=headless)
 
     context = browser.new_context(
             record_video_dir="videos",
